@@ -190,4 +190,23 @@ def npartitions(n, verbose=False):
         p = bitcount(abs(to_int(d))) + 50
     return int(to_int(mpf_add(s, fhalf, prec)))
 
+
+def sum_four(n, all_solution=False):
+    from sympy import sqrt, ceiling, floor
+    from sympy.core.power import integer_nthroot
+    sq = sqrt(n)
+    sols = set()
+    for a in range(ceiling(sq / 2), floor(sq) + 1):
+        sq_b = sqrt(n - a*a)
+        for b in range(ceiling(sq_b / sqrt(3)), floor(sq_b) + 1):
+            sq_c = sqrt(n - a*a - b*b)
+            for c in range(ceiling(sq_c / sqrt(2)), floor(sq_c) + 1):
+                d = n - a*a - b*b - c*c
+                d = integer_nthroot(d, 2)
+                if d[1]:
+                    if all_solution:
+                        sols.add((a, b, c, d[0]))
+                    else:
+                        return (a, b, c, d[0])
+    return sols
 __all__ = ['npartitions']
